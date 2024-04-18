@@ -8,14 +8,23 @@ interface PublicRouteProps {
 
 const ForbiddenPaths = [
   '/login',
-  '/signup/create-account',
+  '/signup/*',
 ]
+
+function isForbidden(path: string) {
+  const exactPaths = ForbiddenPaths.filter((path_) => !path_.endsWith('/*'));
+  const wildcardPaths = ForbiddenPaths.filter((path_) => path_.endsWith('/*')).map((path_) => path_.slice(0, -2));
+
+  return exactPaths.includes(path) ||
+         wildcardPaths.some((path_) => path.startsWith(path_));
+}
+
 
 const PublicRoute: React.FC<PublicRouteProps> = ({children}) => {
   const { user, isEmailVerified, isLoading } = useAuth()
   const location = useLocation()
 
-  if (!isLoading && user && ForbiddenPaths.includes(location.pathname)) {
+  if (!isLoading && user && isForbidden(location.pathname)) {
     return <Navigate to="/" />
   }
 

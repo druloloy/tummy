@@ -29,7 +29,7 @@ const MainRouter = createBrowserRouter([
             },
             {
                 path: 'signup',
-                element: <Registration />,
+                element: <PublicRoute><Registration /></PublicRoute>,
                 children: [
                     {
                         path: '',
@@ -43,7 +43,7 @@ const MainRouter = createBrowserRouter([
             },
             {
                 path: 'login',
-                Component: Login
+                element: <PublicRoute><Login /></PublicRoute>
             },
             {
                 path: 'verify',

@@ -40,7 +40,7 @@ function Login() {
   };
 
   return (
-    <section className='container'>
+    <section className='container mt-28'>
         <section className='w-full md:w-2/3 lg:w-1/3 mt-8 mx-auto'>
             <h2 className='text-5xl md:text-6xl font-medium'>
                 <HighlightText color='primary-500' weight='bold'>Howdy, </HighlightText> my gorgeous friend!</h2>

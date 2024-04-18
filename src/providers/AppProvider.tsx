@@ -1,12 +1,10 @@
 import { AuthContext } from "@contexts/AuthContext"
 import { app } from "@fb/app"
-import { User as FirebaseUser, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, reauthenticateWithCredential, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from "@firebase/auth"
-import useAuth from "hooks/useAuth"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { User as FirebaseUser, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from "@firebase/auth"
+import { useEffect, useMemo, useState } from "react"
 import { UserAPI } from "services/api"
 
 const AppProvider = ({ children }: any) => {
-    
     const [user, setUser] = useState<FirebaseUser | null>(null)
     const [isEmailVerified, setisEmailVerified] = useState<boolean>(false)
     const [isLoading, setLoading] = useState<boolean>(true)

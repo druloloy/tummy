@@ -1,22 +1,17 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import './App.css'
-import Header from './components/organisms/Header'
-import { getAuth, onAuthStateChanged } from '@firebase/auth'
-import { useContext, useEffect, useMemo } from 'react'
-import { app } from '@fb/app'
-import useAuth from 'hooks/useAuth'
-import { AuthContext, AuthContextProps } from '@contexts/AuthContext'
+import Navigation from './components/organisms/Navigation'
 import { Footer } from '@organisms/Footer'
+import useAuth from 'hooks/useAuth'
 
 function App() {
-  const { user, isEmailVerified, isLoading } = useContext(AuthContext) as AuthContextProps
+  const { user } = useAuth()
 
   return (
     <>
       <div className='w-full min-h-screen'>
-        <Header authorized={!!user} />
+        <Navigation authorized={!!user} />
         <Outlet />
-        <Footer authorized={!!user} />
       </div>
     </>
   )

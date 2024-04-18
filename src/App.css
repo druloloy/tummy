@@ -1,7 +1,7 @@
 .tm-header {
     @apply flex flex-row items-center justify-between;
 
-    nav {
+    /* nav {
         ul {
             @apply flex flex-row space-x-4 items-center;
             @apply text-base;
@@ -10,7 +10,7 @@
                 @apply font-medium text-black;
             }
         }
-    }
+    } */
     
     h1.tm-logo {
         @apply text-2xl font-bold text-primary-500 lowercase;
