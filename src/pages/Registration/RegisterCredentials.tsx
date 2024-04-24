@@ -53,7 +53,7 @@ const RegisterCredentials = () => {
 
   return (
             <section className='w-full'>
-                <form className='w-full pb-4' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-full pb-4 *:pt-4' onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         rules={RegisterAccountFormRules}
                         name='username'

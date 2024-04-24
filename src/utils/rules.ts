@@ -82,3 +82,17 @@ export const LoginFormRules: BaseRuleType = {
         required: { value: true, message: 'Password is required.' },
     }
 }
+
+export const NewRecipeRules: BaseRuleType = {
+    title: {
+        required: { value: true, message: 'Title is required.' },
+    },
+    description: {
+        required: { value: true, message: 'Description is required.' },
+        maxLength: 250,
+    },
+    image: {
+        required: { value: true, message: 'Image is required.' },
+
+    }
+}

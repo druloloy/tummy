@@ -13,7 +13,7 @@
     } */
     
     h1.tm-logo {
-        @apply text-2xl font-bold text-primary-500 lowercase;
+        @apply text-2xl font-bold text-primary-900 lowercase;
         @apply md:text-3xl;
         @apply cursor-pointer;
     }

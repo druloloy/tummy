@@ -25,6 +25,10 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: pretty;
 }
 
+ul > li {
+  cursor: pointer;
+}
+
 .tm-input-base {
   @apply w-full;
   @apply mt-4;

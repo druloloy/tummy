@@ -46,7 +46,7 @@ function Login() {
                 <HighlightText color='primary-500' weight='bold'>Howdy, </HighlightText> my gorgeous friend!</h2>
             <h3 className='text-3xl md:text-4xl font-medium mt-4'>Login to your account.</h3>
             <section className='w-full'>
-                <form className='w-full pb-4' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-full pb-4 *:pt-4' onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         rules={LoginFormRules}
                         name='email'

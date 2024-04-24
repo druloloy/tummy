@@ -8,9 +8,9 @@ import { RegisterContext, RegisterContextProps } from '@contexts/RegisterContext
 import SelectionField from '@atoms/SelectionField'
 
 enum GenderEnum {
-    male = 'm',
-    female = 'f',
-    other = 'o'
+    Male = 'm',
+    Female = 'f',
+    Other = 'o'
 }
 
 export type RegisterPersonalInformationInputs = {
@@ -39,7 +39,7 @@ const RegisterPersonalInformation = () => {
 
   return (
     <section className='w-full'>
-                <form className='w-full pb-4' onSubmit={handleSubmit(onSubmit)}>
+                <form className='w-full pb-4 *:pt-4' onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         rules={PersonalnformationRules}
                         name='first_name'

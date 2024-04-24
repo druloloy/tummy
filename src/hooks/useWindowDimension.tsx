@@ -1,7 +1,5 @@
 import React from 'react'
 
-type DeviceType = 'desktop' | 'mobile' | 'tablet'
-
 interface WindowDimensionsProps {
     height: number;
     width: number;

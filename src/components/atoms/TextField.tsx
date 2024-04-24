@@ -8,8 +8,6 @@ interface TextFieldProps extends Omit<InputProps, 'type' | 'startAdornment' | 'e
   type?: 'number' | 'text' | 'email' | 'password' | 'date';
   label?: string;
   placeholder?: string;
-  hasError?: boolean;
-  errorMessage?: string;
   TrailingIcon?: React.ReactElement;
   LeadingIcon?: React.ReactElement;
   control: Control<any>;
@@ -17,7 +15,16 @@ interface TextFieldProps extends Omit<InputProps, 'type' | 'startAdornment' | 'e
 }
 
 
-const TextField: React.FC<TextFieldProps> = ({name, control, label, type, placeholder, TrailingIcon, LeadingIcon, rules}) => {
+const TextField: React.FC<TextFieldProps> = ({
+    name, 
+    control, 
+    label, 
+    type, 
+    placeholder, 
+    TrailingIcon, 
+    LeadingIcon, 
+    rules
+  }) => {
 
   const inputStyle = clsx({
     'border-primary-300 outline-secondary-300': !control._formState.errors[name]?.message,
@@ -27,7 +34,7 @@ const TextField: React.FC<TextFieldProps> = ({name, control, label, type, placeh
   const error = control.getFieldState(name)?.error
 
   return (
-    <section className="flex flex-col text-left pt-4 px-2">
+    <section className="flex flex-col text-left px-2">
       <Controller
         name={name}
         control={control}

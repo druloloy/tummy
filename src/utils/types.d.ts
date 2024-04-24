@@ -1,5 +1,7 @@
 type GenderType = 'm' | 'f' | 'o' | 'a'
 
+type DeviceType = 'desktop' | 'mobile' | 'tablet'
+
 interface User {
     _id: string;
     first_name: string;
@@ -10,7 +12,7 @@ interface User {
     gender?: GenderType;
 }
 
-type RegisterUserType extends Omit<User, '_id'> & {password: string}
+type RegisterUserType = Omit<User, '_id'> & { password: string };
 
 interface UserClaims extends Pick<User, '_id' | 'email' | 'username'> {
     token: string;

@@ -17,7 +17,7 @@ const getIconComponent = (name: IconTypes): IconType | undefined => {
     return aiIcons[name as keyof typeof aiIcons] as IconType
 }
 
-const Icon: React.FC<IconProps> = ({name, size, color, onClick}) => {
+const Icon: React.FC<IconProps> = ({name, size, color = 'primary-500', onClick}) => {
   const IconComponent = getIconComponent(name)
 
   if (!IconComponent) {
