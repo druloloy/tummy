@@ -32,9 +32,9 @@ const RegisterCredentials = () => {
 
     const [passwordVisible, setPasswordVisible] = React.useState(false)
     const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState(false)
-    const { control, handleSubmit, formState: { errors, isDirty }, setError, watch} = useForm<RegisterInputs>({defaultValues, mode: 'onChange'});
+    const { control, handleSubmit, formState: { errors }, setError} = useForm<RegisterInputs>({defaultValues, mode: 'onChange'});
 
-    const onSubmit: SubmitHandler<RegisterInputs> = async ({email, password, username}, event) => {
+    const onSubmit: SubmitHandler<RegisterInputs> = async ({email, password, username}) => {
         try {
             await signup({email, password, username, ...registeredInfo} as RegisterUserType)
             .then(() => {

@@ -1,5 +1,6 @@
 import { RegisterOptions } from "react-hook-form";
 import { UserAPI } from "services/api";
+import {Buffer} from "buffer"
 
 type BaseRuleType = Record<string, Omit<RegisterOptions<any, string>, 'setValueAs' | 'disabled' | 'valueAsNumber' | 'valueAsDate'>>
 
@@ -86,13 +87,53 @@ export const LoginFormRules: BaseRuleType = {
 export const NewRecipeRules: BaseRuleType = {
     title: {
         required: { value: true, message: 'Title is required.' },
+        maxLength: { value: 50, message: 'Title must be less than 50 characters.' }
     },
     description: {
         required: { value: true, message: 'Description is required.' },
-        maxLength: 250,
+        maxLength: {
+            value: 250,
+            message: 'Description must be less than 250 characters.'
+        }
+    },
+    ingredients: {
+        validate: (item: Array<{value: string}>) => {
+            return item.length > 0 ? true : 'At least one ingredient is required.'
+        }
+    },
+    procedure: {
+        validate: (value: string) => {
+            let message = ''
+            value.split('\n').forEach((line, index) => {
+                if (new RegExp(/^\d+\.\)\s+$/).test(line) || !line) {
+                    message = `Empty line at line ${index + 1}.`
+                }
+            })
+
+            return message || true
+        }
     },
     image: {
-        required: { value: true, message: 'Image is required.' },
+        required: { 
+            value: true, 
+            message: 'Image is required.',
+        },
+        validate: {
+            fileType: (imageStr: string) => {
+                const fileType = imageStr.split(';')[0].split(':')[1]
+                const acceptedFiles = ['image/jpeg', 'image/png', 'image/jpg']
+                return !acceptedFiles.includes(fileType) ? 'Image file type is not supported.' : true
+            },
+            fileSize: (imageStr: string) => {
+                const [metadata, data] = imageStr.split(',')
+                const imageBase64 = Buffer.from(data, 'base64')
 
+                const fileType = metadata.split(';')[0].split(':')[1]
+                const imageBlob = new Blob([imageBase64], { type: fileType })
+                const fileSizeMB = imageBlob.size / 1024 / 1024
+
+                return fileSizeMB > 25 ? 'Image file size is too large.' : true
+            }
+        }
     }
 }

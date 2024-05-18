@@ -127,7 +127,7 @@ const ProfileMenu: React.FC = () => {
     return (
         <li ref={ref} title='Profile'  className='relative flex flex-col items-end cursor-default'>
             <Icon onClick={handleClick} name='AiOutlineUser' size={32} color='primary-900' />
-            <ul className={`absolute top-10 w-60 flex-col gap-2 text-xl p-4 rounded-xl shadow-md border border-white bg-white/70 backdrop-blur-lg ${profileShown}`}>
+            <ul className={`absolute top-10 w-60 flex-col gap-2 text-xl p-4 rounded-xl shadow-md border border-white bg-white/90 ${profileShown}`}>
                 <li className='border-b border-primary-300 py-4 select-none text-black/80 cursor-default'>Andrew Loloy</li>
                 <FunctionableList title='Manage Profile'><Link to='/profile'>Manage Profile</Link></FunctionableList>
                 <FunctionableList title='Logout' onClick={handleLogout}>Logout</FunctionableList>

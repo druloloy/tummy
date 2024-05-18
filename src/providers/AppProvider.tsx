@@ -1,20 +1,23 @@
 import { AuthContext } from "@contexts/AuthContext"
 import { app } from "@fb/app"
-import { User as FirebaseUser, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from "@firebase/auth"
-import { useEffect, useMemo, useState } from "react"
+import { User as FirebaseUser, createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from "@firebase/auth"
+import useEmailVerificationCheck from "hooks/useEmailVerificationCheck"
+import { useEffect, useState } from "react"
 import { UserAPI } from "services/api"
 
-const AppProvider = ({ children }: any) => {
-    const [user, setUser] = useState<FirebaseUser | null>(null)
-    const [isEmailVerified, setisEmailVerified] = useState<boolean>(false)
-    const [isLoading, setLoading] = useState<boolean>(true)
+const auth = getAuth(app)
 
-    const auth = useMemo(() => getAuth(app), [])
+const AppProvider = ({ children}: { children: React.ReactNode }) => {
+    const [user, setUser] = useState<FirebaseUser | null>(auth?.currentUser)
+    const [isLoading, setLoading] = useState<boolean>(true) 
+    const { isEmailVerified } = useEmailVerificationCheck(auth, (result) => UserAPI.updateUser({_id: (result.claims.dbid as string), is_user_verified: true}, result.token))    
+
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
                 setUser(user)
-                setisEmailVerified(user.emailVerified)
+            } else {
+                setUser(null)
             }
 
             setLoading(false)
@@ -23,11 +26,9 @@ const AppProvider = ({ children }: any) => {
         return () => unsubscribe()
     }, [])
 
-
     function logout() {
         auth.signOut()
         setUser(null)
-        setisEmailVerified(false)
     }
 
     async function login(email: string, password: string): Promise<FirebaseUser | Error> {
@@ -36,7 +37,6 @@ const AppProvider = ({ children }: any) => {
                 .then((userCredential) => {
                     const user = userCredential.user
                     setUser(user)
-                    setisEmailVerified(user.emailVerified)
                     resolve(user)
                 })
                 .catch((error) => {
@@ -60,7 +60,6 @@ const AppProvider = ({ children }: any) => {
                             })
                             .catch((error) => {
                                 setUser(null)
-                                setisEmailVerified(false)
                                 user.delete();
                                 throw error
                             })
@@ -72,19 +71,8 @@ const AppProvider = ({ children }: any) => {
     }
 
     async function sendVerificationEmail() {
-        return new Promise((resolve, reject) => {
-            if(!!user) {
-                sendEmailVerification(user)
-                .then(() => {
-                    resolve(true)
-                })
-                .catch((error) => {
-                    reject(error)
-                })
-            }
-
-            reject(new Error('User not logged in.'))
-        })
+        if (!user) return false
+        return sendEmailVerification(user).then(() => true)
     }
 
     function deleteUser(user: FirebaseUser) {
@@ -98,11 +86,13 @@ const AppProvider = ({ children }: any) => {
 
     return <AuthContext.Provider value={{
         user,
+        auth,
         isEmailVerified,
         isLoading,
         logout,
         login,
         signup,
+        sendVerificationEmail,
         deleteUser
     }}>
         {children}

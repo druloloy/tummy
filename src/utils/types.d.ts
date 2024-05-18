@@ -1,3 +1,5 @@
+import { ParsedToken } from "@firebase/auth";
+
 type GenderType = 'm' | 'f' | 'o' | 'a'
 
 type DeviceType = 'desktop' | 'mobile' | 'tablet'
@@ -10,6 +12,7 @@ interface User {
     email: string;
     dob: string;
     gender?: GenderType;
+    is_user_verified?: boolean;
 }
 
 type RegisterUserType = Omit<User, '_id'> & { password: string };
@@ -17,6 +20,23 @@ type RegisterUserType = Omit<User, '_id'> & { password: string };
 interface UserClaims extends Pick<User, '_id' | 'email' | 'username'> {
     token: string;
     emailVerified: boolean;
+}
+
+interface CustomClaims extends ParsedToken {
+    dbid: string;
+    username: string;
+    email: string;
+}
+
+interface Recipe {
+    _id: string;
+    image_url: string;
+    title: string;
+    description: string;
+    ingredients: string[];
+    procedure: string;
+    created_at: string;
+    owner_id: string;
 }
 
 type ColorsType = 

@@ -79,16 +79,18 @@ const RegisterPersonalInformation = () => {
                         label='Date of Birth'
                     />
 
-                    <SelectionField
-                        name='gender'
-                        control={control}
-                        label='Gender'
-                        rules={PersonalnformationRules}
-                        options={Object.entries(GenderEnum)}
-                        placeholder='Select your Gender'
-                        setValue={setValue as UseFormSetValue<RegisterPersonalInformationInputs>}
-                        defaultValue={registeredInfo.gender as string}
-                    />
+                    <section className='w-full '>
+                        <SelectionField
+                            name='gender'
+                            control={control}
+                            label='Gender'
+                            rules={PersonalnformationRules}
+                            options={Object.entries(GenderEnum)}
+                            placeholder='Select your Gender'
+                            setValue={setValue as UseFormSetValue<RegisterPersonalInformationInputs>}
+                            defaultValue={registeredInfo.gender as string}
+                        />
+                    </section>
 
                     <section className='w-full p-4'>
                         <button className='cta-primary w-full mt-4' type='submit'>Continue</button>

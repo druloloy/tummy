@@ -13,6 +13,9 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Home from '@pages/Main/Home';
 import NewRecipe from '@pages/Main/NewRecipe';
+import User from '@pages/Main/User';
+import Recipe from '@pages/Main/Recipe';
+import { RecipeAPI } from 'services/api';
 
 const MainRouter = createBrowserRouter([
     {
@@ -26,6 +29,28 @@ const MainRouter = createBrowserRouter([
             {
                 path: 'new',
                 element: <PrivateRoute><NewRecipe /></PrivateRoute>
+            },
+            {
+                path: 'u/:username',
+                element: <PublicRoute><User /></PublicRoute>,
+                loader: ({ params }) => {
+                    // fetch user data and posts
+                    return []
+                }
+            },
+            {
+                path: 'r/:id',
+                element: <PublicRoute><Recipe /></PublicRoute>,
+                loader: async ({ params }) => {
+                    try {
+                        // fetch recipe data
+                        if (!params.id) return {}
+                        const {data} = await RecipeAPI.getRecipe(params.id)
+                        return data
+                    } catch (error) {
+                        return {}
+                    }
+                }
             },
             {
                 path: 'signup',

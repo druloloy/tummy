@@ -1,18 +1,19 @@
 import { Input as BaseInput } from '@mui/base';
 import clsx from 'clsx';
-import React from 'react'
-import { Control, Controller, RegisterOptions } from 'react-hook-form'
+import React, { useCallback } from 'react'
+import { Control, Controller, RegisterOptions, UseFormSetValue } from 'react-hook-form'
 import Icon from './Icon';
 import LoadingIcon from './LoadingIcon';
 
 interface ImageInputProps {
-    control: Control;
+    control: Control<any, any>;
     rules: Record<string, RegisterOptions>;
     name: string;
     showPreview?: boolean;
+    setValue: UseFormSetValue<any>;
 }
 
-const ImagePreview = ({image}) => {
+const ImagePreview = ({image}: {image: string}) => {
     return (
         <section className="w-full mt-4">
             <img src={image} alt="preview" className="w-full h-full object-cover aspect-video" />
@@ -24,34 +25,34 @@ const ImageInput: React.FC<ImageInputProps> = ({
     control,
     rules,
     name,
+    setValue,
     showPreview
 }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null)
-  const boxRef = React.useRef<HTMLSectionElement | null>(null)
+  const boxRef = React.useRef<HTMLDivElement | null>(null)
 
   const [imageUploading, setImageUploading] = React.useState<boolean>(false);
-  const [imageBase64, setImageBase64] = React.useState<string | null>(null);
+  const [imageBase64, setImageBase64] = React.useState<string | null>((control._formValues[name] as string) ?? null);
   const [isFileDragged, setIsFileDragged] = React.useState<boolean>(false);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault()
-    
     if (event.target.files) {
       setImageUploading(true)
       const file = event.target.files[0]
       const reader = new FileReader()
 
       reader.onload = () => {
-        setImageBase64(reader.result as string)
+        const result = reader.result as string
+        setImageBase64(result)
+        setValue(name, result)
         setImageUploading(false)
       }
 
       reader.readAsDataURL(file)
     }
-
   }
 
-  const handleClick = (event: React.MouseEvent) => {
+  const handleClick = () => {
     if (inputRef.current) {
         inputRef.current.click()
     }
@@ -61,12 +62,14 @@ const ImageInput: React.FC<ImageInputProps> = ({
     event.preventDefault()
 
     if (event.dataTransfer.files) {
-        setImageUploading(true)
+      setImageUploading(true)
       const file = event.dataTransfer.files[0]
       const reader = new FileReader()
 
       reader.onload = () => {
-        setImageBase64(reader.result as string)
+        const result = reader.result as string
+        setImageBase64(result)
+        setValue(name, result)
         setImageUploading(false)
       }
 
@@ -93,23 +96,26 @@ const ImageInput: React.FC<ImageInputProps> = ({
   }
 
   const clearImage = () => {
-    setImageBase64(null)
     if (inputRef.current) {
-        inputRef.current.value = ''
+        return inputRef.current.files = null
     }
+    setImageBase64(null)
+    setValue(name, '')
   }
 
   const dragStyle = clsx({
     'bg-primary-100': isFileDragged
   })
 
+  const error =  control.getFieldState(name)?.error
+
   return (
-    <section className="flex flex-col px-4">
-        {showPreview && imageBase64 && <ImagePreview image={imageBase64} removeImage={clearImage} />}
+    <section className="flex flex-col">
+        {showPreview && imageBase64 && <ImagePreview image={imageBase64} />}
         <Controller
             name={name}
             control={control}
-            rules={rules}
+            rules={rules[name]}
             render={({ field }) => 
                 imageBase64 ? (
                     <button 
@@ -135,10 +141,10 @@ const ImageInput: React.FC<ImageInputProps> = ({
                                             inputRef.current = element
                                         },
                                         className: 'hidden',
-                                        accept: 'image/jpeg, image/png'
-                                    },
+                                        accept: 'image/jpeg, image/png, image/jpg',
+                                        onChange: handleImageUpload
+                                    }
                                 }}
-                                onChange={handleImageUpload}
                             />
                             {
                                 !imageUploading ? (
@@ -147,13 +153,14 @@ const ImageInput: React.FC<ImageInputProps> = ({
                                         <p className='text-lg text-primary-500'>Drop the photo or click to upload,</p>
                                     </>
                                 ) : (
-                                    <LoadingIcon text='Uploading...'/>
+                                    <LoadingIcon size={8} text='Uploading...'/>
                                 )
                             }
                     </section>
                 )
             }
         />
+        {error && <p className='text-red-500'>{error.message}</p>}
     </section>
   )
 }

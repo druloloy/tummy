@@ -106,7 +106,7 @@ const Select = React.forwardRef(function CustomSelect<
           return {
             ...resolvedSlotProps,
             className: clsx(
-              `relative text-md font-sans box-border w-full px-4 py-2 rounded-full text-left bg-white border border-solid border-primary-300 text-black hover:bg-primary-50 transition-all outline-0 shadow-md shadow-slate-100 ${
+              `relative text-md font-sans box-border w-full px-4 py-2 pr-8 rounded-full text-left bg-white border border-solid border-primary-300 text-black hover:bg-primary-50 transition-all outline-0 shadow-md shadow-slate-100 ${
                 ownerState.focusVisible
                   ? 'focus-visible:ring-4 ring-primary-500/30 focus-visible:border-primary-500'
                   : ''
@@ -123,7 +123,7 @@ const Select = React.forwardRef(function CustomSelect<
           return {
             ...resolvedSlotProps,
             className: clsx(
-              `text-md font-sans p-1.5 my-3 w-80 rounded-lg overflow-auto outline-0 bg-white border border-solid border-primary-300 text-black`,
+              `text-md font-sans p-1.5 my-3 w-80 h-56 rounded-lg overflow-auto outline-0 bg-white border border-solid border-primary-300 text-black `,
               resolvedSlotProps?.className,
             ),
           };
@@ -158,13 +158,13 @@ const SelectionField: React.FC<SelectionFieldProps<any>> = ({
 }) => {
 
   return (
-    <section className="flex flex-col text-left pt-4 px-2">
+    <section className="flex flex-col text-left">
         <Controller
             name={name}
             control={control}
             rules={rules}
             render={ ({ field: { name, ref } }) => (
-                <section className="flex flex-col text-left px-2">
+                <section className="flex flex-col text-left">
                     {label && <p className="text-md text-black px-2 font-normal">{label}</p>}
                     <Select 
                         ref={ref}

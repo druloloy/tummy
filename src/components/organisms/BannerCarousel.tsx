@@ -13,6 +13,10 @@ interface SlideItemProps {
   ambientColor?: string
 }
 
+interface BannerCarouselProps {
+  title: string
+}
+
 const SlideItem: React.FC<SlideItemProps> = ({imgSrc, title, description, label, ambientColor}) => {
   return (
     <section className='tmy-slide-item bg-transparent w-full relative h-96 lg:h-[36rem] rounded-3xl shadow-xl overflow-hidden' data-ambient-color={ambientColor}>
@@ -56,31 +60,31 @@ const Items: SlideItemProps[] = [
 ]
 
 
-const BannerCarousel = ({title}) => {
-  const {data: initialAmbientColor, loading: initialAmbientColorLoading} = useColor(Items[0].imgSrc, 'hex')
-  const [ambientColor, setAmbientColor] = React.useState<string>('')
+const BannerCarousel: React.FC<BannerCarouselProps> = ({title}) => {
+  // const {data: initialAmbientColor, loading: initialAmbientColorLoading} = useColor(Items[0].imgSrc, 'hex')
+  // const [ambientColor, setAmbientColor] = React.useState<string>('')
 
-  useEffect(() => {
-    if (!initialAmbientColorLoading) {
-      setAmbientColor(initialAmbientColor || '#fff')
-    }
-  }, [initialAmbientColor])
+  // useEffect(() => {
+  //   if (!initialAmbientColorLoading) {
+  //     setAmbientColor(initialAmbientColor || '#fff')
+  //   }
+  // }, [initialAmbientColor])
 
   return (
       <section className='w-full mt-4 mx-auto'>
         {title && <h1 className='text-3xl lg:text-4xl font-semibold z-0 text-black'>{title}</h1>}
         <Swiper
-          style={{
-            backgroundColor: ambientColor,
-            boxShadow: `0 0 200px 100px ${ambientColor}`
-          }}
-          className='w-11/12 rounded-3xl'
+          // style={{
+          //   backgroundColor: ambientColor,
+          //   boxShadow: `0 0 200px 100px ${ambientColor}`
+          // }}
+          className='w-11/12'
           spaceBetween={10}
           slidesPerView={1.15}
-          onSlideChange={(swiper) => {
-              const item = swiper.slides[swiper.activeIndex].querySelector('.tmy-slide-item ')?.getAttribute('data-ambient-color')
-              setAmbientColor(item || '#fff')
-          }}
+          // onSlideChange={(swiper) => {
+          //     const item = swiper.slides[swiper.activeIndex].querySelector('.tmy-slide-item ')?.getAttribute('data-ambient-color')
+          //     setAmbientColor(item || '#fff')
+          // }}
           speed={1500}
           autoplay={{
               delay: 5000,
@@ -91,18 +95,18 @@ const BannerCarousel = ({title}) => {
           >
           {
               Items.map((item, index) => {
-                  const [color, setColor] = React.useState('')
-                  const getAmbientColor = useMemo(async () => {
-                      return await getColor(item.imgSrc, 'hex')
-                          .then((color) => color)
-                    }, [item.imgSrc])
+                  // const [color, setColor] = React.useState('')
+                  // const getAmbientColor = useMemo(async () => {
+                  //     return await getColor(item.imgSrc, 'hex')
+                  //         .then((color) => color)
+                  //   }, [item.imgSrc])
 
-                  React.useEffect(() => {
-                      getAmbientColor
-                          .then((color) => {
-                              setColor(color)
-                          })
-                  }, [])
+                  // React.useEffect(() => {
+                  //     getAmbientColor
+                  //         .then((color) => {
+                  //             setColor(color)
+                  //         })
+                  // }, [])
 
                   return <Slide
                       key={index}>
@@ -111,7 +115,7 @@ const BannerCarousel = ({title}) => {
                             title={item.title}
                             description={item.description}
                             label={item.label}
-                            ambientColor={color}
+                            // ambientColor={color}
                         />
                   </Slide>
               })

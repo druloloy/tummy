@@ -9,13 +9,15 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({children}) => {
-  const { user, isEmailVerified, isLoading } = useAuth()
+  const { user, isLoading } = useAuth()
+
+
 
   if (!isLoading && !user) {
     return <Navigate to="/login" />
   }
 
-  if (!isLoading && (user && !isEmailVerified)) {
+  if (!isLoading && (user && !user?.emailVerified)) {
     return <Navigate to="/verify" />
   }
 
